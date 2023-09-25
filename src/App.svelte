@@ -1,6 +1,7 @@
 <script>
 	let todos = [];
 	let task = "";
+	let error = "";
 
 
 	const addTodo = () => {
@@ -8,9 +9,13 @@
 		task: task,
 		isComplete: false,
 		createdAtm: new Date(),
-	}
-
+	};
+	if(task !== ""){
 		todos = [...todos, todo];
+		error = "";
+	} else {
+		error = "Task is empty"
+	}
 		task="";
 	}
 
@@ -24,13 +29,18 @@
 		todos = todos.filter((item)=> item != deleteItem);
 	};
 
+	const keyIsPressed = (event) => {
+		if(event.key === "Enter"){
+			addTodo();
+		}
+	}
+
 	// $: console.log(todo);
 	$: console.table(todos);
 
 </script>
 
 <main>
-
 	<input type="text" placeholder="Add a task" bind:value={task}/>
 	<button on:click={addTodo}>Add</button>
 	<ol>
@@ -44,13 +54,21 @@
 					<button on:click={() => deleteTodo(index)}>✘</button>
 				</span>
 			</li>
+		{:else}
+			<p>No todos found</p>
 		{/each}
+		<p class="error">{error}</p>
 	</ol>
 </main>
+<svelte:window on:keydown={keyIsPressed} />
 
 <style>
 	.complete {
 		text-decoration: line-through;
+	}
+
+	.error {
+		color: red;
 	}
 
 	/* main {
