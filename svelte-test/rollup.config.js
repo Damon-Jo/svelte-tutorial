@@ -70,12 +70,7 @@ export default {
 
 		// If we're building for production (npm run build
 		// instead of npm run dev), minify
-		production && terser(),
-
-		replace({
-			// Define your environment variables here
-			'process.env.NODE_ENV': JSON.stringify('development'), // Example
-		  }),
+		production && terser()
 	],
 	watch: {
 		clearScreen: false
